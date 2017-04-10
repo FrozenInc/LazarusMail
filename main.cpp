@@ -34,9 +34,6 @@ bool masterLoop()
 {
     bool run = false;
 
-
-
-
     return run;
 }
 
