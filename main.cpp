@@ -4,7 +4,7 @@
 //
 // Master calculates everything, while the slave only sends information to master
 
-#include "main.h"
+#include "main.hpp"
 
 // Only for simulating the arduino
 int main() {

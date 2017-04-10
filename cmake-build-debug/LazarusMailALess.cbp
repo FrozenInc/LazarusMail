@@ -85,13 +85,13 @@
 		<Unit filename="C:/Users/Taco/CLionProjects/LazarusMailALess/main.cpp">
 			<Option target="LazarusMailALess"/>
 		</Unit>
-		<Unit filename="C:/Users/Taco/CLionProjects/LazarusMailALess/main.h">
+		<Unit filename="C:/Users/Taco/CLionProjects/LazarusMailALess/main.hpp">
 			<Option target="LazarusMailALess"/>
 		</Unit>
 		<Unit filename="C:/Users/Taco/CLionProjects/LazarusMailALess/slave.cpp">
 			<Option target="LazarusMailALess"/>
 		</Unit>
-		<Unit filename="C:/Users/Taco/CLionProjects/LazarusMailALess/slave.h">
+		<Unit filename="C:/Users/Taco/CLionProjects/LazarusMailALess/slave.hpp">
 			<Option target="LazarusMailALess"/>
 		</Unit>
 		<Unit filename="C:/Users/Taco/CLionProjects/LazarusMailALess/CMakeLists.txt">

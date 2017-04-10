@@ -2,10 +2,10 @@
 // Created by Taco on 10/04/2017.
 //
 
-#ifndef LAZARUSMAILALESS_MAIN_H
-#define LAZARUSMAILALESS_MAIN_H
+#ifndef LAZARUSMAILALESS_MAIN_HPP
+#define LAZARUSMAILALESS_MAIN_HPP
 #include <iostream>
-#include "slave.h"
+#include "slave.hpp"
 
 
 void masterSetup();
@@ -20,5 +20,4 @@ int getAnalogSignalFromSlave();
 
 // Analog output for the stepper motor
 int sendMotorControl();
-
-#endif //LAZARUSMAILALESS_MAIN_H
+#endif //LAZARUSMAILALESS_MAIN_HPP

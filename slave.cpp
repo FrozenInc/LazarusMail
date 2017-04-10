@@ -5,7 +5,7 @@
 
 // Slave only takes in 2 analog sensors and send and analog signal to the master arduino
 
-#include "slave.h"
+#include "slave.hpp"
 
 void slaveSetup()
 {
