@@ -7,7 +7,7 @@
 #include <iostream>
 
 void slaveSetup();
-void slaveLoop();
+int slaveLoop();
 
 // Slave analog sensors
 int slaveGetAnalogSensor1();
@@ -15,5 +15,5 @@ int slaveGetAnalogSensor2();
 
 // Slave - master connection
 
-int sendAnalogSignalToMaster();
+int sendAnalogSignalToMaster(int s1, int s2);
 #endif //LAZARUSMAILALESS_SLAVE_HPP

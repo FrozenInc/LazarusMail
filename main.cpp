@@ -11,6 +11,7 @@ int main() {
 
     // Checks if the loop should continue to run
     bool run = true;
+    int slaveSignal = 1;
 
     // Runs first time setup
     masterSetup();
@@ -18,7 +19,7 @@ int main() {
 
     // Runs the loop
     while(run){
-        slaveLoop();
+        slaveSignal = slaveLoop();
         run = masterLoop();
     }
     return 0;
