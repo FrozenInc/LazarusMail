@@ -3,8 +3,8 @@
 
 CMakeFiles/LazarusMailALess.dir/main.cpp.obj
  C:/Users/Taco/CLionProjects/LazarusMailALess/main.cpp
- C:/Users/Taco/CLionProjects/LazarusMailALess/main.h
- C:/Users/Taco/CLionProjects/LazarusMailALess/slave.h
+ C:/Users/Taco/CLionProjects/LazarusMailALess/main.hpp
+ C:/Users/Taco/CLionProjects/LazarusMailALess/slave.hpp
 CMakeFiles/LazarusMailALess.dir/slave.cpp.obj
  C:/Users/Taco/CLionProjects/LazarusMailALess/slave.cpp
- C:/Users/Taco/CLionProjects/LazarusMailALess/slave.h
+ C:/Users/Taco/CLionProjects/LazarusMailALess/slave.hpp

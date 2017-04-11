@@ -7,14 +7,15 @@
 
 #include "slave.hpp"
 
-void slaveSetup()
+bool slaveSetup()
 {
-
+    bool connection = true;
+    return connection;
 }
 
 int slaveLoop()
 {
-    bool s1 = 1, s2 = 1;
+    int s1 = 1, s2 = 1;
     int slaveSignal;
 
     s1 = slaveGetAnalogSensor1();

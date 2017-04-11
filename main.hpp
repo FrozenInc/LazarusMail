@@ -8,7 +8,7 @@
 #include "slave.hpp"
 
 
-void masterSetup();
+bool masterSetup();
 bool masterLoop();
 
 // Get analog master sensors

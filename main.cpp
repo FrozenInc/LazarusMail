@@ -9,26 +9,36 @@
 // Only for simulating the arduino
 int main() {
 
+    // Checks if there is a connection between master and slave
+    bool connection = false;
+
     // Checks if the loop should continue to run
     bool run = true;
     int slaveSignal = 1;
 
     // Runs first time setup
-    masterSetup();
-    slaveSetup();
+    while(!connection) {
+        connection = masterSetup();
+    }
+    //slaveSetup();
 
     // Runs the loop
     while(run){
-        slaveSignal = slaveLoop();
-        run = masterLoop();
+        slaveSignal = getAnalogSignalFromSlave();
+        if(slaveSignal == 0) {
+            run = masterLoop();
+        }
+        else{
+            //ADD MORE STUFF HERE
+        }
     }
     return 0;
 }
 
 
-void masterSetup()
+bool masterSetup()
 {
-
+    return slaveSetup();
 }
 
 bool masterLoop()
@@ -40,16 +50,34 @@ bool masterLoop()
 
 int masterGetAnalogSensor1()
 {
+    int force = 0;
+
+    if(force == 0) {
+        return 1;
+    }
+    else {
+        return 0;
+    }
     return 0;
 }
 int masterGetAnalogSensor2()
 {
+
+    int force = 0;
+
+    if(force == 0) {
+        return 1;
+    }
+    else {
+        return 0;
+    }
     return 0;
+
 }
 
 int getAnalogSignalFromSlave()
 {
-    return 0;
+    return slaveLoop();
 }
 
 int sendMotorControl()

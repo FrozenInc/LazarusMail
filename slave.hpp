@@ -6,7 +6,7 @@
 #define LAZARUSMAILALESS_SLAVE_HPP
 #include <iostream>
 
-void slaveSetup();
+bool slaveSetup();
 int slaveLoop();
 
 // Slave analog sensors

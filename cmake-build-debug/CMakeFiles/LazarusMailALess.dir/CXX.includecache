@@ -7,20 +7,20 @@
 #IncludeRegexTransform: 
 
 C:/Users/Taco/CLionProjects/LazarusMailALess/main.cpp
-main.h
-C:/Users/Taco/CLionProjects/LazarusMailALess/main.h
+main.hpp
+C:/Users/Taco/CLionProjects/LazarusMailALess/main.hpp
 
-C:/Users/Taco/CLionProjects/LazarusMailALess/main.h
+C:/Users/Taco/CLionProjects/LazarusMailALess/main.hpp
 iostream
 -
-slave.h
-C:/Users/Taco/CLionProjects/LazarusMailALess/slave.h
+slave.hpp
+C:/Users/Taco/CLionProjects/LazarusMailALess/slave.hpp
 
 C:/Users/Taco/CLionProjects/LazarusMailALess/slave.cpp
-slave.h
-C:/Users/Taco/CLionProjects/LazarusMailALess/slave.h
+slave.hpp
+C:/Users/Taco/CLionProjects/LazarusMailALess/slave.hpp
 
-C:/Users/Taco/CLionProjects/LazarusMailALess/slave.h
+C:/Users/Taco/CLionProjects/LazarusMailALess/slave.hpp
 iostream
 -
 
