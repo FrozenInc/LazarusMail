@@ -4,10 +4,43 @@
 // 1 analog sensor
 // 1 stepper motor with coresponding controller accepting: direction, steps, sleep, reset
 
+/*
+ * TODO: Create the amount of pins for all the sensors
+ */
+// All digital sensors
+const int topSensor = 2;
+int topSensorState;
+const int bottomSensor = 3;
+int bottomSensorState;
+const int openingSensor = 4;
+int openingSensorState;
 
-// Setup is not needed as eveything is determinated in the loop at every run
+// All analog sensors
+const int boxSensor1 = A0;
+const int boxSensor2 = A1;
+int boxSensorState;
+
+
+// Motor pins
+const int stepPin = 13;
+const int dirPin =  12;
+// The number of steps in one full motor rotation
+const int stepsInFullRound = 200;
+
+
 void setup() {
   // put your setup code here, to run once:
+
+  // Initializes the pins for the motor
+  pinMode(stepPin, OUTPUT);      
+  pinMode(dirPin, OUTPUT);
+  digitalWrite(stepPin, LOW);
+  digitalWrite(dirPin, LOW); 
+
+  // Initializes the pins for the digital sensors
+  pinMode(topSensor, INPUT_PULLUP);
+  pinMode(bottomSensor, INPUT_PULLUP);
+  pinMode(openingSensor, INPUT_PULLUP);
 
 }
 
@@ -20,17 +53,41 @@ void loop() {
 
 int elevatorTopSensor()
 {
-  
+  state = digitalRead(topSensor);
+  if (state = HIGH)
+  {
+    return 1;
+  }
+  else
+  {
+    return 0;
+  }
 }
 
 int elevatorBottomSensor()
 {
-    
+  state = digitalRead(bottomSensor);
+  if (state = HIGH)
+  {
+    return 1;
+  }
+  else
+  {
+    return 0;
+  }
 }
 
-int openingSensor()
+int openingSensorFunc()
 {
-  
+  state = digitalRead(openingSensor);
+  if (state = HIGH)
+  {
+    return 1;
+  }
+  else
+  {
+    return 0;
+  }
 }
 
 int boxSensor()
@@ -38,8 +95,8 @@ int boxSensor()
   
 }
 
-int stepperMotor(int dir, int steps)
+int stepperMotor(boolean runForward, double speedRPS, int stepCount)
 {
-  
+
 }
 
