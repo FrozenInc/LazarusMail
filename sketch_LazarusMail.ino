@@ -53,8 +53,8 @@ void loop() {
 // Top elevator sensor
 int elevatorTopSensor()
 {
-  state = digitalRead(topSensor);
-  if (state = HIGH)
+  topSensorState = digitalRead(topSensor);
+  if (topSensorState = HIGH)
   {
     return 1;
   }
@@ -67,8 +67,8 @@ int elevatorTopSensor()
 // Bottom elevator sensor
 int elevatorBottomSensor()
 {
-  state = digitalRead(bottomSensor);
-  if (state = HIGH)
+  bottomSensorState = digitalRead(bottomSensor);
+  if (bottomSensorState = HIGH)
   {
     return 1;
   }
@@ -79,10 +79,10 @@ int elevatorBottomSensor()
 }
 
 // Opening sensor
-int openingSensor()
+int openingSensorFunc()
 {
-  state = digitalRead(openingSensor);
-  if (state = HIGH)
+  openingSensorState = digitalRead(openingSensor);
+  if (openingSensorState = HIGH)
   {
     return 1;
   }
