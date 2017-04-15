@@ -50,7 +50,7 @@ void loop() {
 
 }
 
-
+// Top elevator sensor
 int elevatorTopSensor()
 {
   state = digitalRead(topSensor);
@@ -64,6 +64,7 @@ int elevatorTopSensor()
   }
 }
 
+// Bottom elevator sensor
 int elevatorBottomSensor()
 {
   state = digitalRead(bottomSensor);
@@ -77,7 +78,8 @@ int elevatorBottomSensor()
   }
 }
 
-int openingSensorFunc()
+// Opening sensor
+int openingSensor()
 {
   state = digitalRead(openingSensor);
   if (state = HIGH)
@@ -90,11 +92,13 @@ int openingSensorFunc()
   }
 }
 
+// Box weight/fill sensor
 int boxSensor()
 {
   
 }
 
+// Controlls the step motor
 int stepperMotor(boolean runForward, double speedRPS, int stepCount)
 {
 
