@@ -82,15 +82,6 @@ void loop() {
     dir = 1;
   }
 
-  // Remmebers where the elevator was last
-  if (topSen == 1)
-  {
-    lastPos = 1;
-  }
-  else if (botSen == 1)
-  {
-    lastPos = 0;
-  }
 
   // Checks if the opening is open and decideds if it should go or not
   // This should only be one funtion that checks if the elevator shall move as otherwise it migth overwrite itself and do bad stuff
@@ -116,8 +107,53 @@ void loop() {
     go = 1;
   }
 
-  
-  
+  // Checks what the last position of the elevator was and decided in what direction the elevator shall move
+  if (lastPos == 1)
+  {
+    dir = 0;
+  }
+  else
+  {
+    dir = 1;
+  }
+
+  // TODO:
+  // 1. Stop the elevator at the bottom and top
+  // 2. Make the elevator move when at the bot or top after getting/dropping of mail
+
+
+  // This is supposed to make the elevator move between top and bot, but stop when it reaches it
+  if (dir == 1 && lastPos == 0 && go == 1)
+  {
+    if (topSen == 1)
+    {
+      go = 0;
+      dir = 0;
+      lastPos = 1;
+    }
+  }
+  else if (dir == 0 && lastPos == 1 && go == 1)
+  {
+    if (botSen == 0)
+    {
+      go = 0;
+      dir = 1;
+      lastPos = 0;
+    }
+  }
+
+    
+  // Remmebers where the elevator was last (May not be needed)
+  /*
+  if (topSen == 1)
+  {
+    lastPos = 1;
+  }
+  else if (botSen == 1)
+  {
+    lastPos = 0;
+  }
+  */
 
 }
 
