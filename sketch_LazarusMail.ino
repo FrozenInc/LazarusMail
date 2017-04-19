@@ -75,13 +75,6 @@ void loop() {
   // 1024 = max signal
   int boxSen = boxSensor();
 
-  // Checks of the box is full
-  // If full set direction to up
-  if (boxSen > 1000)
-  {
-    dir = 1;
-  }
-
 
   // Checks if the opening is open and decideds if it should go or not
   // This should only be one funtion that checks if the elevator shall move as otherwise it migth overwrite itself and do bad stuff
@@ -134,12 +127,20 @@ void loop() {
   }
   else if (dir == 0 && lastPos == 1 && go == 1)
   {
-    if (botSen == 0)
+    if (botSen == 1)
     {
       go = 0;
       dir = 1;
       lastPos = 0;
     }
+  }
+
+  
+  // Checks of the box is full
+  // If full set direction to up
+  if (boxSen > 1000)
+  {
+    dir = 1;
   }
 
     
