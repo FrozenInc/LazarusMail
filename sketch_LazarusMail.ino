@@ -56,7 +56,6 @@ void setup() {
   pinMode(topSensor, INPUT_PULLUP);
   pinMode(bottomSensor, INPUT_PULLUP);
   pinMode(openingSensor, INPUT_PULLUP);
-
 }
 
 // Loop checks all the sensors and decides if the elevator should move and at what direction
@@ -74,6 +73,13 @@ void loop() {
   // 0 = no signal
   // 1024 = max signal
   int boxSen = boxSensor();
+
+  // Checks of the box is full
+  // If full set direction to up
+  if (boxSen > 1000)
+  {
+    dir = 1;
+  }
 
 
   // Checks if the opening is open and decideds if it should go or not
@@ -127,7 +133,7 @@ void loop() {
   }
   else if (dir == 0 && lastPos == 1 && go == 1)
   {
-    if (botSen == 1)
+    if (botSen == 0)
     {
       go = 0;
       dir = 1;
@@ -135,14 +141,9 @@ void loop() {
     }
   }
 
-  
-  // Checks of the box is full
-  // If full set direction to up
-  if (boxSen > 1000)
-  {
-    dir = 1;
-  }
 
+  // Calls the motor control funtion to move the motor 1 step at the right direction
+  stepperMotor();
     
   // Remmebers where the elevator was last (May not be needed)
   /*
@@ -198,8 +199,22 @@ int boxSensor()
 }
 
 // Controlls the step motor
-int stepperMotor(boolean runForward, double speedRPS, int stepCount)
+// Runs the motor just 1 step in a specific direction
+//void stepperMotor(boolean runForward, double speedRPS, int stepCount)
+void stepperMotor()
 {
+  // Tells the motor what direction it must go
+  digitalWrite(dirPin, dir);
 
+  // Moves the motor 1 step
+  if(go == 1)
+  {
+    digitalWrite(stepPin, HIGH);
+    delay(1);
+    digitalWrite(stepPin, LOW);
+  }
+  else
+  {
+    
+  }
 }
-
