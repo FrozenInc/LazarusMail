@@ -134,6 +134,7 @@ void loop() {
       go = 0;
       dir = 0;
       lastPos = 1;
+      delay(15000);
     }
   }
   else if (dir == 0 && lastPos == 1 && go == 1)
