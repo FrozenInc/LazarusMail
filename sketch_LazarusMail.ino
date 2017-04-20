@@ -94,7 +94,8 @@ void loop() {
     // Waits 15 seconds before trying anything new
     delay(15000);
     // If the opening is closed it knows that somebody has droppen mail so it goes to the box
-    if (openSen == 1)
+    // Also needs to know if it's at the bottom
+    if (openSen == 1 && botSen == 1)
     {
       go = 1;
       dir = 1;
