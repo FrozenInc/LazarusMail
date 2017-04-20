@@ -4,6 +4,8 @@
 // 1 analog sensor
 // 1 stepper motor with coresponding controller accepting: direction, steps, sleep, reset
 
+#include "hx711.h"
+
 /*
  * TODO: Create the amount of pins for all the sensors
  */
