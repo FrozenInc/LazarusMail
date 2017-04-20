@@ -18,8 +18,10 @@ const int openingSensor = 4;
 int openingSensorState;
 
 // All analog sensors
-const int boxSensor1 = A0;
-const int boxSensor2 = A1;
+// Box sensor
+//const int boxSensor1 = A0;
+//const int boxSensor2 = A1;
+Hx711 scale(A1, A0);
 int boxSensorState;
 
 
