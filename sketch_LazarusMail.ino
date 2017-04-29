@@ -4,6 +4,7 @@
 // 1 analog sensor
 // 1 stepper motor with coresponding controller accepting: direction, steps, sleep, reset
 
+// Includes the library we use for the analog sensor
 #include "hx711.h"
 
 /*
@@ -19,8 +20,8 @@ int openingSensorState;
 
 // All analog sensors
 // Box sensor
-//const int boxSensor1 = A0;
-//const int boxSensor2 = A1;
+//DOUT = #A1
+//SCK = #A0
 Hx711 scale(A1, A0);
 int boxSensorState;
 
@@ -31,6 +32,10 @@ const int dirPin =  12;
 // The number of steps in one full motor rotation
 const int stepsInFullRound = 200;
 
+// Is the elevator supposed to move
+// 0 = no
+// 1 = yes
+int shouldGo = 0;
 
 // Should the elevator go at any direction
 // 0 = no
@@ -79,13 +84,81 @@ void loop() {
   int boxSen = boxSensor();
 
   // Checks of the box is full
-  // If full set direction to up
+  // If full set direction to up so that it goes to the top and waits for a person to empty it
+  // NOTE: The values needs to be tested to determinate how many kg we can put in
   if (boxSen > 1000)
   {
     dir = 1;
   }
 
+  // Checks if the opening has been open
+  if(openSen == 0)
+  {
+    shouldGo = 0;
+    delay(15000);
+    // If the opening has been closed after been open the elevator is free to move again
+    if(openSen == 1)
+    {
+      shouldGo = 1;
+      dir = 1;
+      lastPos = 0;
+    }
+  }
+  // If the elevator is at the top and the box is full it stops
+  else if(topSen == 1 && boxSen > 1000)
+  {
+    shouldGo = 0;
+    lastPos = 1;
+    dir = 0;
+  }
+  /*
+  // If the elevator is at the top but the box is still not full
+  else if(topSen == 1 && boxSen < 1000)
+  {
+    // Wait 5 seconds to make sure all the mail gets droped
+    delay(5000);
+    shouldGo = 1;
+    lastPos = 1;
+    dir = 0;
+  }
+  */
+  // This is supposed to make the elevator move between top and bot, but stop when it reaches it
+  if (dir == 1 && lastPos == 0 && shouldGo == 1)
+  {
+    if (topSen == 1)
+    {
+      shouldGo = 0;
+      dir = 0;
+      lastPos = 1;
+      delay(15000);
+    }
+  }
+  else if (dir == 0 && lastPos == 1 && shouldGo == 1)
+  {
+    if (botSen == 0)
+    {
+      shouldGo = 0;
+      dir = 1;
+      lastPos = 0;
+    }
+  }
 
+  // Decided acording to the shouldGo command if the elevator shall move and which direction
+  if(shouldGo == 1)
+  {
+    go = 1;
+    stepperMotor();
+    delay(100);
+    go = 0;
+    stepperMotor();
+  }
+  else
+  {
+    go = 0;
+    stepperMotor();  
+  }
+
+  /*
   // Checks if the opening is open and decideds if it should go or not
   // This should only be one funtion that checks if the elevator shall move as otherwise it migth overwrite itself and do bad stuff
   if (openSen == 0)
@@ -150,7 +223,7 @@ void loop() {
 
   // Calls the motor control funtion to move the motor 1 step at the right direction
   stepperMotor();
-    
+  */
   // Remmebers where the elevator was last (May not be needed)
   /*
   if (topSen == 1)
@@ -198,10 +271,12 @@ int openingSensorFunc()
   return 0;
 }
 
-// Box weight/fill sensor
+// Box weight sensor
 int boxSensor()
 {
-  return 0;
+  // Gets the weight that the analog sensor detects and returns it
+  boxSensorState = scale.getGram();
+  return boxSensorState;
 }
 
 // Controlls the step motor
