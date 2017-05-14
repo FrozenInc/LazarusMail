@@ -6,6 +6,8 @@
 
 #include "hx711.h"
 
+#define MAX_WEIGHT 1000
+
 /*
  * TODO: Create the amount of pins for all the sensors
  */
@@ -65,6 +67,7 @@ int passedMid = 0;
 // Top elevator sensor
 int elevatorTopSensor()
 {
+  lastPos = 1;
   if (digitalRead(topSensor) == HIGH)
   {
     return LOW;
@@ -76,6 +79,7 @@ int elevatorTopSensor()
 // Middle elevator sensor
 int elevatorMiddleSensor()
 {
+  passedMid = 1;
   if (digitalRead(middleSensor) == HIGH)
   {
     return LOW;
@@ -86,6 +90,7 @@ int elevatorMiddleSensor()
 // Bottom elevator sensor
 int elevatorBottomSensor()
 {
+  lastPos = 0;
   if (digitalRead(bottomSensor) == HIGH)
   {
     return LOW;
@@ -145,6 +150,14 @@ int setPassedMid(int newPassedMid)
 {
   return newPassedMid;
 }
+int setGo(int newGo)
+{
+  // Stops the motor if the code decides that the newGo is 0
+  if(newGo == 0){
+    stopMotor();
+  }
+  return newGo;
+}
 
 void setup() {
   // put your setup code here, to run once:
@@ -175,9 +188,113 @@ void loop() {
   openingSensorState = openingSensorFunc();
 
   // Result from the analog sensor
-  boxSensorState = boxSensor();
+  //boxSensorState = boxSensor();
+  boxSensorState = 0;
 
-  
+  // If the elevator is at the bottom check if the mail drop has been opened and decides if it should move or not
+  // Dont move
+  if(bottomSensorState == HIGH && go == 0 && openingSensorState == HIGH){
+    lastPos = setLastPos(0);
+    destination = setDestination(0);
+    dir = setDirection(0);
+    passedMid = setPassedMid(0);
+    go = setGo(0);
+  }
+  // Dont move
+  else if(bottomSensorState == HIGH && go == 0 && openingSensorState == LOW){
+    lastPos = setLastPos(0);
+    destination = setDestination(1);
+    dir = setDirection(1);
+    passedMid = setPassedMid(0);
+    go = setGo(0);
+
+    delay(5000);
+    // Check is the mail drop has been closed and then move
+    if(bottomSensorState == HIGH && go == 0 && openingSensorState == HIGH){
+      delay(10000);
+      lastPos = setLastPos(0);
+      destination = setDestination(1);
+      dir = setDirection(1);
+      passedMid = setPassedMid(0);
+      go = setGo(1);
+    }
+    // If the mail drop is still open dont move
+    else{
+      lastPos = setLastPos(0);
+      destination = setDestination(0);
+      dir = setDirection(0);
+      passedMid = setPassedMid(0);
+      go = setGo(0);
+    }
+  }
+  // IF the destination is to the bottom, stop when it reaches is
+  else if(bottomSensorState == HIGH && go == 1 && openingSensorState == HIGH && destination == 0){
+    lastPos = setLastPos(0);
+    destination = setDestination(0);
+    dir = setDirection(0);
+    passedMid = setPassedMid(0);
+    go = setGo(0);
+  }
+
+  // Mid sensor, just moving by
+  else if(middleSensorState == HIGH && destination != 1){
+    passedMid = setPassedMid(1);
+  }
+
+  // Mid sensor, stopping at it
+  else if(middleSensorState == HIGH && destination == 1 && go == 1){
+    passedMid = setPassedMid(1);
+    dir = setDirection(0);
+    go = setGo(0);
+    destination = setDestination(0);
+    boxSensorState = boxSensor();
+  }
+  // While it is at mid, check all the time when the mail box has been emptied
+  else if(middleSensorState == HIGH && destination == 0 && go == 0){
+    boxSensorState = boxSensor();
+  }
+  // Will go in here just when it has stopped at mid for some time
+  // Will start moving downwards after 5 seconds delay
+  else if(middleSensorState == HIGH && destination == 0 && go == 0 && boxSensorState < MAX_WEIGHT){
+    delay(5000);
+    passedMid = setPassedMid(0);
+    dir = setDirection(0);
+    go = setGo(1);
+  }
+
+  // Top sensor
+  // Stops at top sensor and then moves to a new location
+  else if(topSensorState = HIGH && destination == 2){
+    go = setGo(0);
+    passedMid = setPassedMid(0);
+    dir = setDirection(0);
+    boxSensorState = boxSensor();
+    delay(5000);
+    // Checks if the box is full or not and decides a destination
+    if(boxSensorState > MAX_WEIGHT){
+      destination = setDestination(1);
+      go = setGo(1);
+    }
+    else{
+      destination = setDestination(0);
+      go = setGo(1);
+    }
+  }
+
+  // Checks if the opening is open and stops the motor
+  // This needs to exist as otherwise every single if/else if needs to check too
+  if(openingSensorState == LOW){
+    go = setGo(0);
+  }
+
+  // Decides if the motor shall move or not
+  // Only place that starts the motor as otherwise we risk that it doesnt stop at a correct position
+  if(go == 0){
+    stopMotor();
+  }
+  else{
+    startMotor();
+  }
 
 }
 
