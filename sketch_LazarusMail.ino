@@ -269,6 +269,7 @@ void loop() {
     passedMid = setPassedMid(0);
     dir = setDirection(0);
     boxSensorState = boxSensor();
+    lastPos = setLastPos(1);
     delay(5000);
     // Checks if the box is full or not and decides a destination
     if(boxSensorState > MAX_WEIGHT){
