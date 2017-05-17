@@ -46,8 +46,8 @@ const int dirPin =  11;
 int go = 0;
   
 // What direction should the elevator go to 
-// 0 = down
-// 1 = up
+// 0 = up
+// 1 = down
 int dir = 0;
 
 // Saves the last positon of the elevator(top or bot)
@@ -121,7 +121,7 @@ int boxSensor()
 // This only turns 1 step, so you need to call it every loop if you want it to continue spinning
 void startMotor()
 {
-  analogWrite(stepPin, 500);
+  analogWrite(stepPin, 1000);
 }
 
 void stopMotor()
@@ -181,17 +181,18 @@ void setup() {
   pinMode(middleSensor, INPUT_PULLUP);
   pinMode(bottomSensor, INPUT_PULLUP);  
   pinMode(openingSensor, INPUT_PULLUP);
-  Serial.begin(9600);
-  Serial.println("test");
+  //Serial.begin(9600);
+  //Serial.println("test");
   // Result from the analog sensor
   //boxSensorState = boxSensor();
   boxSensorState = 0;
+  //Serial.println(dir);
+  dir = setDirection(0);
 }
 
 // Loop checks all the sensors and decides if the elevator should move and at what direction
 void loop() {
   
-
   // Results from the digital sensors
   // 0 = no signal
   // 1 = signal
@@ -220,12 +221,12 @@ void loop() {
     dir = setDirection(1);
     passedMid = setPassedMid(0);
     go = setGo(0);
-    Serial.println("2");
+    //Serial.println("2");
     delay(3000);
     // Check is the mail drop has been closed and then move
     openingSensorState = openingSensorFunc();
     if(bottomSensorState == HIGH && openingSensorState == HIGH){
-      Serial.println("3");
+      //Serial.println("3");
       delay(1000);
       lastPos = setLastPos(0);
       destination = setDestination(2);
@@ -235,7 +236,7 @@ void loop() {
     }
     // If the mail drop is still open dont move
     else{
-      Serial.println("3a");
+      //Serial.println("3a");
       lastPos = setLastPos(0);
       destination = setDestination(0);
       dir = setDirection(0);
@@ -250,26 +251,27 @@ void loop() {
     dir = setDirection(0);
     passedMid = setPassedMid(0);
     go = setGo(0);
-    Serial.println("4");
+    //Serial.println("4");
   }
 
   // Mid sensor, just moving by
   else if(middleSensorState == HIGH && destination != 1){
     passedMid = setPassedMid(1);
-    Serial.println("5");
+    go = setGo(1);
+    //Serial.println("5");
   }
 
   // Mid sensor, stopping at it
   else if(middleSensorState == HIGH && destination == 1){
-    Serial.println("6");
+    //Serial.println("6");
     passedMid = setPassedMid(1);
     dir = setDirection(0);
     go = setGo(0);
     //destination = setDestination(0);
     boxSensorState = boxSensor();
-    Serial.println(boxSensorState);
+    //Serial.println(boxSensorState);
     if(boxSensorState < MAX_WEIGHT){
-      Serial.println("7");
+      //Serial.println("7");
       passedMid = setPassedMid(0);
       dir = setDirection(0);
       destination = setDestination(0);
@@ -307,7 +309,7 @@ void loop() {
     boxSensorState = boxSensor();
     delay(5000);
     lastPos = setLastPos(1);
-    Serial.println(boxSensorState);
+    //Serial.println(boxSensorState);
     
     
     // Checks if the box is full or not and decides a destination
@@ -321,7 +323,9 @@ void loop() {
     }
   }
 
-  Serial.println(go);
+  //Serial.println(go);
+  //Serial.println(dir);
+
   // Checks if the opening is open and stops the motor
   // This needs to exist as otherwise every single if/else if needs to check too
   if(openingSensorState == LOW){
@@ -330,6 +334,7 @@ void loop() {
   else if(openingSensorState == HIGH && bottomSensorState == LOW && middleSensorState == LOW && topSensorState == LOW){
     go = setGo(1);
   }
+  //else if(openingSensorState == HIGH && middleSensorState == HIGH && )
 
   // Decides if the motor shall move or not
   // Only place that starts the motor as otherwise we risk that it doesnt stop at a correct position
