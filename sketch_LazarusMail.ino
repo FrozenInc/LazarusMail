@@ -281,6 +281,10 @@ void loop() {
       go = setGo(1);
     }
   }
+  else if(topSensorState == HIGH && openingSensorState == LOW){
+      go = setGo(0);
+      destination = setDestination(2);
+    }
 
   // Checks if the opening is open and stops the motor
   // This needs to exist as otherwise every single if/else if needs to check too
