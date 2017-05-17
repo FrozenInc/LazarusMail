@@ -259,7 +259,12 @@ void loop() {
       go = setGo(1);
     }
   }
-  
+  // If the elevator is at the top and the mail drop has been opened stops
+  // This function is neded as otherwise the elevator locks itself at the top
+  else if(topSensorState == HIGH && openingSensorState == LOW){
+    go = setGo(0);
+    destination = setDestination(2);
+  }
   // Top sensor
   // Stops at top sensor and then moves to a new location
   else if(topSensorState == HIGH && destination == 2){
@@ -267,9 +272,11 @@ void loop() {
     go = setGo(0);
     passedMid = setPassedMid(0);
     dir = setDirection(0);
-    boxSensorState = boxSensor();
+    lastPos = setLastPos(1);
     delay(5000);
-    lastPos = setLastPos(1);    
+    boxSensorState = boxSensor();
+    delay(2000);
+        
     
     // Checks if the box is full or not and decides a destination
     if(boxSensorState > MAX_WEIGHT){
@@ -281,10 +288,6 @@ void loop() {
       go = setGo(1);
     }
   }
-  else if(topSensorState == HIGH && openingSensorState == LOW){
-      go = setGo(0);
-      destination = setDestination(2);
-    }
 
   // Checks if the opening is open and stops the motor
   // This needs to exist as otherwise every single if/else if needs to check too
@@ -294,6 +297,7 @@ void loop() {
   else if(openingSensorState == HIGH && bottomSensorState == LOW && middleSensorState == LOW && topSensorState == LOW){
     go = setGo(1);
   }
+  
 
   // Decides if the motor shall move or not
   // Only place that starts the motor as otherwise we risk that it doesnt stop at a correct position
