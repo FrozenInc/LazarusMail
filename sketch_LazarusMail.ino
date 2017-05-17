@@ -290,7 +290,6 @@ void loop() {
   else if(openingSensorState == HIGH && bottomSensorState == LOW && middleSensorState == LOW && topSensorState == LOW){
     go = setGo(1);
   }
-  //else if(openingSensorState == HIGH && middleSensorState == HIGH && )
 
   // Decides if the motor shall move or not
   // Only place that starts the motor as otherwise we risk that it doesnt stop at a correct position
