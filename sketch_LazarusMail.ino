@@ -1,17 +1,15 @@
 // This is the code for the Arduino controlling Lazarus mail
 // It has the following parts:
-// 3 digital sensors
+// 4 digital sensors
 // 1 analog sensor
 // 1 stepper motor with coresponding controller accepting: direction, steps, sleep, reset
 
 #include "hx711.h"
 
+// Determinates what the max weight in the box is
 //#define MAX_WEIGHT 1000
 #define MAX_WEIGHT 200
 
-/*
- * TODO: Create the amount of pins for all the sensors
- */
 // All digital sensors
 const int topSensor = 2;
 int topSensorState;
@@ -37,8 +35,6 @@ int boxSensorState;
 // Motor pins
 const int stepPin = 10;
 const int dirPin =  11;
-// The number of steps in one full motor rotation
-//const int stepsInFullRound = 200;
 
 // Should the elevator go at any direction
 // 0 = no
@@ -168,8 +164,6 @@ int setGo(int newGo)
 }
 
 void setup() {
-  // put your setup code here, to run once:
-
   // Initializes the pins for the motor
   pinMode(stepPin, OUTPUT);      
   pinMode(dirPin, OUTPUT);
@@ -181,12 +175,10 @@ void setup() {
   pinMode(middleSensor, INPUT_PULLUP);
   pinMode(bottomSensor, INPUT_PULLUP);  
   pinMode(openingSensor, INPUT_PULLUP);
-  //Serial.begin(9600);
-  //Serial.println("test");
   // Result from the analog sensor
   //boxSensorState = boxSensor();
   boxSensorState = 0;
-  //Serial.println(dir);
+  // Sets direction to bottom when LAzarus Mail is started so that it calibrates itself when it reaches the bottom sensor
   dir = setDirection(0);
 }
 
@@ -200,8 +192,6 @@ void loop() {
   middleSensorState = elevatorMiddleSensor();
   bottomSensorState = elevatorBottomSensor();
   openingSensorState = openingSensorFunc();
-
-  //Serial.println(destination);
   
 
   // If the elevator is at the bottom check if the mail drop has been opened and decides if it should move or not
@@ -221,13 +211,11 @@ void loop() {
     dir = setDirection(1);
     passedMid = setPassedMid(0);
     go = setGo(0);
-    //Serial.println("2");
-    delay(3000);
+    delay(5000);
     // Check is the mail drop has been closed and then move
     openingSensorState = openingSensorFunc();
     if(bottomSensorState == HIGH && openingSensorState == HIGH){
-      //Serial.println("3");
-      delay(1000);
+      delay(5000);
       lastPos = setLastPos(0);
       destination = setDestination(2);
       dir = setDirection(1);
@@ -236,7 +224,6 @@ void loop() {
     }
     // If the mail drop is still open dont move
     else{
-      //Serial.println("3a");
       lastPos = setLastPos(0);
       destination = setDestination(0);
       dir = setDirection(0);
@@ -251,53 +238,27 @@ void loop() {
     dir = setDirection(0);
     passedMid = setPassedMid(0);
     go = setGo(0);
-    //Serial.println("4");
   }
 
   // Mid sensor, just moving by
   else if(middleSensorState == HIGH && destination != 1){
     passedMid = setPassedMid(1);
     go = setGo(1);
-    //Serial.println("5");
   }
 
   // Mid sensor, stopping at it
   else if(middleSensorState == HIGH && destination == 1){
-    //Serial.println("6");
     passedMid = setPassedMid(1);
     dir = setDirection(0);
     go = setGo(0);
-    //destination = setDestination(0);
     boxSensorState = boxSensor();
-    //Serial.println(boxSensorState);
     if(boxSensorState < MAX_WEIGHT){
-      //Serial.println("7");
       passedMid = setPassedMid(0);
       dir = setDirection(0);
       destination = setDestination(0);
       go = setGo(1);
     }
   }
-  // While it is at mid, check all the time when the mail box has been emptied
-  /*
-  else if(middleSensorState == HIGH && boxSensor() >= MAX_WEIGHT){
-    Serial.println("2");
-    boxSensorState = boxSensor();
-  }
-  */
-  /*
-  // Will go in here just when it has stopped at mid for some time
-  // Will start moving downwards after 5 seconds delay
-  else if(middleSensorState == HIGH && destination == 0 && boxSensor() < MAX_WEIGHT){
-    Serial.println("3");
-    delay(5000);
-    
-    passedMid = setPassedMid(0);
-    dir = setDirection(0);
-    go = setGo(1);
-    
-  }
-  */
   
   // Top sensor
   // Stops at top sensor and then moves to a new location
@@ -308,9 +269,7 @@ void loop() {
     dir = setDirection(0);
     boxSensorState = boxSensor();
     delay(5000);
-    lastPos = setLastPos(1);
-    //Serial.println(boxSensorState);
-    
+    lastPos = setLastPos(1);    
     
     // Checks if the box is full or not and decides a destination
     if(boxSensorState > MAX_WEIGHT){
@@ -322,9 +281,6 @@ void loop() {
       go = setGo(1);
     }
   }
-
-  //Serial.println(go);
-  //Serial.println(dir);
 
   // Checks if the opening is open and stops the motor
   // This needs to exist as otherwise every single if/else if needs to check too
@@ -344,10 +300,5 @@ void loop() {
   else{
     startMotor();
   }
-  //Serial.println("-------------");
-  //Serial.println(destination);
-
 }
-
-
 
